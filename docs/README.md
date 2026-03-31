@@ -142,10 +142,7 @@ Toggle:Toggle()          -- flip current state
 Toggle:GetValue()        -- returns bool
 ```
 
-**Config registration:**
-```lua
-Window:RegisterElement("MyToggle", Toggle)
-```
+> Any Checkbox with a `Label` is automatically tracked by the config system.
 
 ---
 
@@ -191,10 +188,7 @@ Input:GetValue()   -- returns string
 Input:Clear()
 ```
 
-**Config registration:**
-```lua
-Window:RegisterElement("MyInput", Input)
-```
+> Any InputText with a `Label` is automatically tracked by the config system.
 
 ---
 
@@ -243,10 +237,7 @@ Slider:SetValue(50)
 Slider:GetValue()  -- returns number
 ```
 
-**Config registration:**
-```lua
-Window:RegisterElement("MySlider", Slider)
-```
+> Any Slider with a `Label` is automatically tracked by the config system.
 
 ---
 
@@ -554,19 +545,22 @@ Modal exposes the same element methods as a tab. Close with `Modal:Close()`.
 
 ## Config System
 
-A Config tab is automatically injected into every window that has a tab bar. No setup required.
+A Config tab is automatically injected as the last tab in every window that has a tab bar. Nothing to set up.
 
-**Register elements** you want saved/loaded:
+**What gets tracked automatically:**
 
-```lua
-Window:RegisterElement("Speed",   MySlider)
-Window:RegisterElement("Enabled", MyToggle)
-Window:RegisterElement("Name",    MyInput)
-```
+Any element with a `Label` field of these types is saved and loaded without any extra code:
+- Checkbox / RadioButton
+- Slider / ProgressSlider
+- InputText
 
-Elements are keyed by the string you pass. The Config tab provides:
-- A text input to name the save file
-- A dropdown to pick an existing save to load
-- Save and Load buttons
+**How to use:**
 
-Files are stored in `imgui_configs/` as JSON. Extension is handled internally — you only see the profile name in the UI.
+1. Go to the Config tab in your window
+2. Type a profile name in the Save As field
+3. Press **Save** — current state of all tracked elements is written to `imgui_configs/<name>.json`
+4. To restore: pick a profile from the dropdown, press **Load**
+
+The dropdown lists all existing saves in `imgui_configs/`. File extension is handled internally.
+
+**Note:** Elements without a `Label` are not tracked. If two elements share the same label string, the last one created wins.
